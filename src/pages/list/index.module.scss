@@ -1,0 +1,20 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background-color: $color-bg-page;
+}
+
+.list {
+  min-height: 100vh;
+  padding: $spacing-md $page-padding calc(env(safe-area-inset-bottom) + $spacing-xl);
+}
+
+.listHeader {
+  margin-bottom: $spacing-md;
+}
+
+.listCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}

@@ -2,14 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Input, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
-import type { Subscription } from '@/types';
-import { mockSubscriptions } from '@/data/mockUser';
-import { getQueryString, generateId, formatDate } from '@/utils';
+import { getQueryString, formatDate } from '@/utils';
+import { useAppStore } from '@/store';
 import Empty from '@/components/Empty';
 import styles from './index.module.scss';
 
 const SubscriptionPage: React.FC = () => {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>(mockSubscriptions);
+  const subscriptions = useAppStore((state) => state.subscriptions);
+  const addSubscription = useAppStore((state) => state.addSubscription);
+  const removeSubscription = useAppStore((state) => state.removeSubscription);
+  const toggleSubscription = useAppStore((state) => state.toggleSubscription);
+
   const [newKeyword, setNewKeyword] = useState('');
 
   useEffect(() => {
@@ -20,60 +23,43 @@ const SubscriptionPage: React.FC = () => {
   }, []);
 
   const handleAdd = useCallback(() => {
-    const keyword = newKeyword.trim();
-    if (!keyword) {
-      Taro.showToast({ title: '请输入关键词', icon: 'none' });
-      return;
+    const result = addSubscription(newKeyword);
+    if (result.success) {
+      setNewKeyword('');
+      console.log('[Subscription] 添加订阅:', newKeyword);
     }
-
-    if (subscriptions.some(s => s.keyword === keyword)) {
-      Taro.showToast({ title: '该关键词已订阅', icon: 'none' });
-      return;
-    }
-
-    if (subscriptions.length >= 10) {
-      Taro.showToast({ title: '最多订阅10个关键词', icon: 'none' });
-      return;
-    }
-
-    const newSub: Subscription = {
-      id: generateId(),
-      keyword,
-      enabled: true,
-      createdAt: new Date().toISOString(),
-    };
-
-    setSubscriptions(prev => [newSub, ...prev]);
-    setNewKeyword('');
-    console.log('[Subscription] 添加订阅:', newSub);
     Taro.showToast({
-      title: '订阅成功',
-      icon: 'success',
+      title: result.message,
+      icon: result.success ? 'success' : 'none',
     });
-  }, [newKeyword, subscriptions]);
+  }, [newKeyword, addSubscription]);
 
-  const handleToggle = useCallback((id: string) => {
-    setSubscriptions(prev => prev.map(sub =>
-      sub.id === id ? { ...sub, enabled: !sub.enabled } : sub
-    ));
-  }, []);
+  const handleToggle = useCallback(
+    (id: string) => {
+      toggleSubscription(id);
+    },
+    [toggleSubscription]
+  );
 
-  const handleDelete = useCallback((id: string, keyword: string) => {
-    Taro.showModal({
-      title: '取消订阅',
-      content: `确定要取消订阅"${keyword}"吗？`,
-      success: (res) => {
-        if (res.confirm) {
-          setSubscriptions(prev => prev.filter(sub => sub.id !== id));
-          console.log('[Subscription] 取消订阅:', id);
-          Taro.showToast({
-            title: '已取消订阅',
-            icon: 'none',
-          });
-        }
-      },
-    });
-  }, []);
+  const handleDelete = useCallback(
+    (id: string, keyword: string) => {
+      Taro.showModal({
+        title: '取消订阅',
+        content: `确定要取消订阅"${keyword}"吗？`,
+        success: (res) => {
+          if (res.confirm) {
+            removeSubscription(id);
+            console.log('[Subscription] 取消订阅:', id);
+            Taro.showToast({
+              title: '已取消订阅',
+              icon: 'none',
+            });
+          }
+        },
+      });
+    },
+    [removeSubscription]
+  );
 
   return (
     <View className={styles.page}>
@@ -117,7 +103,7 @@ const SubscriptionPage: React.FC = () => {
             </Text>
           </View>
         ) : (
-          subscriptions.map(sub => (
+          subscriptions.map((sub) => (
             <View key={sub.id} className={styles.subItem}>
               <View className={styles.subContent}>
                 <Text className={styles.subIcon}>

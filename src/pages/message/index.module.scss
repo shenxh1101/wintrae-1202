@@ -210,3 +210,11 @@
   color: $color-text-secondary;
   @include text-ellipsis;
 }
+
+.noticeLink {
+  display: block;
+  margin-top: $spacing-sm;
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}

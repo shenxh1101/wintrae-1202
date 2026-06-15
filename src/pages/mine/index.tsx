@@ -1,27 +1,42 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { currentUser, mockMyPosts, mockMyClaims, mockMyFavorites } from '@/data/mockUser';
-import { mockSubscriptions } from '@/data/mockUser';
+import { currentUser } from '@/data/mockUser';
+import { useAppStore } from '@/store';
 import styles from './index.module.scss';
 
 const MinePage: React.FC = () => {
+  const myPosts = useAppStore((state) => state.getMyPosts());
+  const myClaims = useAppStore((state) => state.getMyClaims());
+  const myFavorites = useAppStore((state) => state.getMyFavorites());
+  const subscriptions = useAppStore((state) => state.subscriptions);
+  const posts = useAppStore((state) => state.posts);
+  const favorites = useAppStore((state) => state.favorites);
+  const myClaimsIds = useAppStore((state) => state.myClaims);
+  const myPostsIds = useAppStore((state) => state.myPosts);
+
+  const postCount = useMemo(() => myPosts.length, [posts, myPostsIds, myPosts]);
+  const claimCount = useMemo(() => myClaims.length, [posts, myClaimsIds, myClaims]);
+  const favCount = useMemo(() => myFavorites.length, [posts, favorites, myFavorites]);
+
   const handleMenuClick = useCallback((path: string) => {
     Taro.navigateTo({ url: path });
   }, []);
 
-  const handleTabClick = useCallback((tab: string) => {
-    Taro.showToast({
-      title: `${tab}功能开发中`,
-      icon: 'none',
-    });
+  const handleTabClick = useCallback((type: string) => {
+    Taro.navigateTo({ url: `/pages/list/index?type=${type}` });
   }, []);
 
   const menuItems = [
-    { icon: '📝', text: '我的发布', path: '', badge: mockMyPosts.length },
-    { icon: '✅', text: '我的认领', path: '', badge: mockMyClaims.length },
-    { icon: '⭐', text: '我的收藏', path: '', badge: mockMyFavorites.length },
-    { icon: '🔔', text: '订阅管理', path: '/pages/subscription/index', badge: mockSubscriptions.length },
+    { icon: '📝', text: '我的发布', type: 'published', badge: postCount },
+    { icon: '✅', text: '我的认领', type: 'claimed', badge: claimCount },
+    { icon: '⭐', text: '我的收藏', type: 'favorites', badge: favCount },
+    {
+      icon: '🔔',
+      text: '订阅管理',
+      path: '/pages/subscription/index',
+      badge: subscriptions.length,
+    },
   ];
 
   const moreItems = [
@@ -51,39 +66,39 @@ const MinePage: React.FC = () => {
         </View>
 
         <View className={styles.statsRow}>
-          <View className={styles.statItem}>
-            <Text className={styles.statNumber}>{mockMyPosts.length}</Text>
+          <View className={styles.statItem} onClick={() => handleTabClick('published')}>
+            <Text className={styles.statNumber}>{postCount}</Text>
             <Text className={styles.statLabel}>发布</Text>
           </View>
-          <View className={styles.statItem}>
-            <Text className={styles.statNumber}>{mockMyClaims.length}</Text>
+          <View className={styles.statItem} onClick={() => handleTabClick('claimed')}>
+            <Text className={styles.statNumber}>{claimCount}</Text>
             <Text className={styles.statLabel}>认领</Text>
           </View>
-          <View className={styles.statItem}>
-            <Text className={styles.statNumber}>{mockMyFavorites.length}</Text>
+          <View className={styles.statItem} onClick={() => handleTabClick('favorites')}>
+            <Text className={styles.statNumber}>{favCount}</Text>
             <Text className={styles.statLabel}>收藏</Text>
           </View>
-          <View className={styles.statItem}>
-            <Text className={styles.statNumber}>{mockSubscriptions.length}</Text>
+          <View className={styles.statItem} onClick={() => handleMenuClick('/pages/subscription/index')}>
+            <Text className={styles.statNumber}>{subscriptions.length}</Text>
             <Text className={styles.statLabel}>订阅</Text>
           </View>
         </View>
       </View>
 
       <View className={styles.quickActions}>
-        <View className={styles.quickAction} onClick={() => handleTabClick('发布')}>
+        <View className={styles.quickAction} onClick={() => handleTabClick('published')}>
           <View className={styles.quickIcon}>
             <Text>📝</Text>
           </View>
           <Text className={styles.quickText}>我发布的</Text>
         </View>
-        <View className={styles.quickAction} onClick={() => handleTabClick('认领')}>
+        <View className={styles.quickAction} onClick={() => handleTabClick('claimed')}>
           <View className={styles.quickIcon}>
             <Text>✅</Text>
           </View>
           <Text className={styles.quickText}>我认领的</Text>
         </View>
-        <View className={styles.quickAction} onClick={() => handleTabClick('收藏')}>
+        <View className={styles.quickAction} onClick={() => handleTabClick('favorites')}>
           <View className={styles.quickIcon}>
             <Text>⭐</Text>
           </View>
@@ -97,7 +112,9 @@ const MinePage: React.FC = () => {
           <View
             key={index}
             className={styles.menuItem}
-            onClick={() => item.path ? handleMenuClick(item.path) : handleTabClick(item.text)}
+            onClick={() =>
+              item.path ? handleMenuClick(item.path) : handleTabClick(item.type!)
+            }
           >
             <View className={styles.menuLeft}>
               <View className={styles.menuIcon}>
@@ -123,7 +140,11 @@ const MinePage: React.FC = () => {
           <View
             key={index}
             className={styles.menuItem}
-            onClick={() => item.path ? handleMenuClick(item.path) : handleTabClick(item.text)}
+            onClick={() =>
+              item.path
+                ? handleMenuClick(item.path)
+                : Taro.showToast({ title: `${item.text}功能开发中`, icon: 'none' })
+            }
           >
             <View className={styles.menuLeft}>
               <View className={styles.menuIcon}>

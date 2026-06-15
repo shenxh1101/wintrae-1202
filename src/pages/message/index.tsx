@@ -2,8 +2,9 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
-import { mockConversations, mockSystemNotices } from '@/data/mockMessages';
+import { mockConversations } from '@/data/mockMessages';
 import { formatRelativeTime } from '@/utils';
+import { useAppStore } from '@/store';
 import Empty from '@/components/Empty';
 import styles from './index.module.scss';
 
@@ -12,30 +13,33 @@ type TabType = 'conversation' | 'notice';
 const MessagePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('conversation');
   const [conversations, setConversations] = useState(mockConversations);
-  const [notices, setNotices] = useState(mockSystemNotices);
+
+  const systemNotices = useAppStore((state) => state.systemNotices);
+  const markNoticeAsRead = useAppStore((state) => state.markNoticeAsRead);
 
   const unreadConvCount = conversations.reduce((sum, conv) => sum + conv.unreadCount, 0);
-  const unreadNoticeCount = notices.filter(n => !n.isRead).length;
+  const unreadNoticeCount = systemNotices.filter((n) => !n.isRead).length;
 
   const handleConvClick = useCallback((convId: string, postId: string) => {
-    setConversations(prev => prev.map(conv =>
-      conv.id === convId ? { ...conv, unreadCount: 0 } : conv
-    ));
+    setConversations((prev) =>
+      prev.map((conv) => (conv.id === convId ? { ...conv, unreadCount: 0 } : conv))
+    );
     Taro.navigateTo({
       url: `/pages/chat/index?convId=${convId}&postId=${postId}`,
     });
   }, []);
 
-  const handleNoticeClick = useCallback((notice: typeof mockSystemNotices[0]) => {
-    setNotices(prev => prev.map(n =>
-      n.id === notice.id ? { ...n, isRead: true } : n
-    ));
-    if (notice.relatedPostId) {
-      Taro.navigateTo({
-        url: `/pages/detail/index?id=${notice.relatedPostId}`,
-      });
-    }
-  }, []);
+  const handleNoticeClick = useCallback(
+    (notice: { id: string; relatedPostId?: string; type: string }) => {
+      markNoticeAsRead(notice.id);
+      if (notice.relatedPostId) {
+        Taro.navigateTo({
+          url: `/pages/detail/index?id=${notice.relatedPostId}`,
+        });
+      }
+    },
+    [markNoticeAsRead]
+  );
 
   const getNoticeIcon = (type: string) => {
     const icons: Record<string, string> = {
@@ -91,7 +95,7 @@ const MessagePage: React.FC = () => {
               description="去帖子详情页联系发布者吧"
             />
           ) : (
-            conversations.map(conv => (
+            conversations.map((conv) => (
               <View
                 key={conv.id}
                 className={styles.conversationItem}
@@ -112,7 +116,9 @@ const MessagePage: React.FC = () => {
                 <View className={styles.convContent}>
                   <View className={styles.convHeader}>
                     <Text className={styles.convName}>{conv.otherUser.name}</Text>
-                    <Text className={styles.convTime}>{formatRelativeTime(conv.updatedAt)}</Text>
+                    <Text className={styles.convTime}>
+                      {formatRelativeTime(conv.updatedAt)}
+                    </Text>
                   </View>
                   <Text className={styles.convPost}>📌 {conv.postTitle}</Text>
                   <Text className={styles.convLastMsg}>
@@ -123,36 +129,39 @@ const MessagePage: React.FC = () => {
               </View>
             ))
           )
+        ) : systemNotices.length === 0 ? (
+          <Empty
+            icon="🔔"
+            text="暂无通知"
+            description="订阅关键词后，新帖会第一时间通知您"
+          />
         ) : (
-          notices.length === 0 ? (
-            <Empty
-              icon="🔔"
-              text="暂无通知"
-              description="订阅关键词后，新帖会第一时间通知您"
-            />
-          ) : (
-            notices.map(notice => (
-              <View
-                key={notice.id}
-                className={classnames(styles.noticeItem, !notice.isRead && styles.unread)}
-                onClick={() => handleNoticeClick(notice)}
-              >
-                <View className={styles.noticeHeader}>
-                  <View className={styles.noticeType}>
-                    <View className={styles.noticeIcon}>
-                      <Text>{getNoticeIcon(notice.type)}</Text>
-                    </View>
-                    <View className={styles.noticeInfo}>
-                      <Text className={styles.noticeTitle}>{getNoticeTitle(notice.type)}</Text>
-                      <Text className={styles.noticeTime}>{formatRelativeTime(notice.createdAt)}</Text>
-                    </View>
+          systemNotices.map((notice) => (
+            <View
+              key={notice.id}
+              className={classnames(styles.noticeItem, !notice.isRead && styles.unread)}
+              onClick={() => handleNoticeClick(notice)}
+            >
+              <View className={styles.noticeHeader}>
+                <View className={styles.noticeType}>
+                  <View className={styles.noticeIcon}>
+                    <Text>{getNoticeIcon(notice.type)}</Text>
                   </View>
-                  {!notice.isRead && <View className={styles.unreadDot} />}
+                  <View className={styles.noticeInfo}>
+                    <Text className={styles.noticeTitle}>{getNoticeTitle(notice.type)}</Text>
+                    <Text className={styles.noticeTime}>
+                      {formatRelativeTime(notice.createdAt)}
+                    </Text>
+                  </View>
                 </View>
-                <Text className={styles.noticeContent}>{notice.content}</Text>
+                {!notice.isRead && <View className={styles.unreadDot} />}
               </View>
-            ))
-          )
+              <Text className={styles.noticeContent}>{notice.content}</Text>
+              {notice.relatedPostId && (
+                <Text className={styles.noticeLink}>点击查看帖子 →</Text>
+              )}
+            </View>
+          ))
         )}
       </ScrollView>
     </View>

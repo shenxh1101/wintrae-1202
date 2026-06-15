@@ -2,10 +2,11 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, Input, Textarea, Image, Picker, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
-import type { PostType, PostCategory, Campus } from '@/types';
+import type { Post, PostType, PostCategory, Campus, PostStatus } from '@/types';
 import { CAMPUS_OPTIONS, CATEGORY_OPTIONS } from '@/types';
 import { currentUser } from '@/data/mockUser';
 import { generateId } from '@/utils';
+import { useAppStore } from '@/store';
 import styles from './index.module.scss';
 
 const PublishPage: React.FC = () => {
@@ -21,6 +22,8 @@ const PublishPage: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  const addPost = useAppStore((state) => state.addPost);
 
   const isValid = useMemo(() => {
     return title.trim() && description.trim() && category && campus && place && startDate;
@@ -65,16 +68,27 @@ const PublishPage: React.FC = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const newPost = {
+      const campusLatLongMap: Record<string, { lat: number; lng: number }> = {
+        main: { lat: 39.9042, lng: 116.4074 },
+        east: { lat: 39.9052, lng: 116.4084 },
+        west: { lat: 39.9032, lng: 116.4064 },
+        south: { lat: 39.9022, lng: 116.4054 },
+        north: { lat: 39.9072, lng: 116.4104 },
+      };
+      const latLong = campusLatLongMap[campus as string] || campusLatLongMap.main;
+
+      const newPost: Post = {
         id: generateId(),
         type,
-        category,
-        title,
-        description,
+        category: category as PostCategory,
+        title: title.trim(),
+        description: description.trim(),
         images,
         location: {
           campus: campus as Campus,
-          place,
+          place: place.trim(),
+          latitude: latLong.lat,
+          longitude: latLong.lng,
         },
         dateRange: {
           start: startDate,
@@ -82,13 +96,14 @@ const PublishPage: React.FC = () => {
         },
         tags,
         author: currentUser,
-        status: 'active',
+        status: 'active' as PostStatus,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         viewCount: 0,
         favoriteCount: 0,
       };
 
+      addPost(newPost);
       console.log('[Publish] 发布成功', newPost);
 
       Taro.showToast({

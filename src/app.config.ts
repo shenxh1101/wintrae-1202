@@ -8,7 +8,8 @@ export default defineAppConfig({
     'pages/detail/index',
     'pages/chat/index',
     'pages/subscription/index',
-    'pages/report/index'
+    'pages/report/index',
+    'pages/list/index',
   ],
   window: {
     backgroundTextStyle: 'light',

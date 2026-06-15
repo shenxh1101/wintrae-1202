@@ -35,9 +35,11 @@ const SearchPage: React.FC = () => {
         type: type || undefined,
         category: category || undefined,
         campus: campus || undefined,
+        dateStart: startDate || undefined,
+        dateEnd: endDate || undefined,
       });
     }
-  }, [debouncedKeyword, type, category, campus, updateFilter, hasSearched]);
+  }, [debouncedKeyword, type, category, campus, startDate, endDate, updateFilter, hasSearched]);
 
   const handleSearch = useCallback(() => {
     if (keyword.trim()) {
@@ -156,6 +158,20 @@ const SearchPage: React.FC = () => {
               onClick={() => setCampus('')}
             >
               <Text>{CAMPUS_OPTIONS.find(c => c.value === campus)?.label}</Text>
+              <Text>×</Text>
+            </View>
+          )}
+          {(startDate || endDate) && (
+            <View
+              className={classnames(styles.filterItem, styles.active)}
+              onClick={() => {
+                setStartDate('');
+                setEndDate('');
+              }}
+            >
+              <Text>
+                {startDate || '*'} ~ {endDate || '*'}
+              </Text>
               <Text>×</Text>
             </View>
           )}
