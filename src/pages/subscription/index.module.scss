@@ -1,0 +1,213 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background-color: $color-bg-page;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+}
+
+.headerCard {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  margin: $spacing-md $page-padding;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+}
+
+.headerTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+  margin-bottom: $spacing-xs;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: $line-height-normal;
+}
+
+.addSection {
+  background-color: $color-bg-card;
+  margin: 0 $page-padding $spacing-md;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.addTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.addInputRow {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.addInput {
+  flex: 1;
+  height: $button-height-md;
+  padding: 0 $spacing-md;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:focus {
+    border-color: $color-primary;
+    background-color: $color-bg-card;
+  }
+
+  &::placeholder {
+    color: $color-text-disabled;
+  }
+}
+
+.addBtn {
+  @include button-reset;
+  width: 160rpx;
+  height: $button-height-md;
+  background-color: $color-primary;
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.96);
+  }
+
+  &.disabled {
+    background-color: $color-bg-hover;
+    color: $color-text-disabled;
+  }
+}
+
+.listSection {
+  background-color: $color-bg-card;
+  margin: 0 $page-padding;
+  border-radius: $radius-lg;
+  padding: $spacing-sm 0;
+  box-shadow: $shadow-card;
+}
+
+.listTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  padding: $spacing-md $spacing-lg;
+}
+
+.subItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md $spacing-lg;
+  border-top: 1rpx solid $color-divider;
+  transition: all $transition-base;
+
+  &:active {
+    background-color: $color-bg-hover;
+  }
+}
+
+.subContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.subIcon {
+  font-size: 32rpx;
+}
+
+.subKeyword {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.subDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.subActions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.switch {
+  width: 100rpx;
+  height: 56rpx;
+  border-radius: $radius-round;
+  background-color: $color-border;
+  position: relative;
+  transition: all $transition-base;
+
+  &.active {
+    background-color: $color-primary;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 4rpx;
+    left: 4rpx;
+    width: 48rpx;
+    height: 48rpx;
+    border-radius: $radius-round;
+    background-color: $color-bg-card;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+    transition: all $transition-base;
+  }
+
+  &.active::after {
+    left: 48rpx;
+  }
+}
+
+.deleteBtn {
+  font-size: 32rpx;
+  color: $color-text-disabled;
+  padding: $spacing-xs;
+  transition: all $transition-base;
+
+  &:active {
+    color: $color-error;
+  }
+}
+
+.empty {
+  padding: $spacing-xl * 2 $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.emptyIcon {
+  font-size: 100rpx;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.emptyDesc {
+  font-size: $font-size-sm;
+  color: $color-text-disabled;
+  text-align: center;
+  line-height: $line-height-normal;
+}

@@ -1,0 +1,47 @@
+@use '@/styles/variables.scss' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.lost {
+  background-color: $color-lost-bg;
+  color: $color-lost;
+}
+
+.found {
+  background-color: $color-found-bg;
+  color: $color-found;
+}
+
+.category {
+  background-color: $color-tag-bg;
+  color: $color-primary;
+}
+
+.normal {
+  background-color: $color-bg-hover;
+  color: $color-text-secondary;
+}
+
+.statusActive {
+  background-color: rgba(52, 199, 89, 0.1);
+  color: $color-success;
+}
+
+.statusClosed {
+  background-color: $color-bg-hover;
+  color: $color-text-tertiary;
+}
+
+.statusClaimed {
+  background-color: rgba(74, 144, 226, 0.1);
+  color: $color-primary;
+}

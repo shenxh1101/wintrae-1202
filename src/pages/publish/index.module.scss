@@ -1,0 +1,370 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background-color: $color-bg-page;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 140rpx);
+}
+
+.typeSelector {
+  display: flex;
+  background-color: $color-bg-card;
+  margin: $spacing-lg $page-padding;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  gap: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.typeOption {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg $spacing-md;
+  border-radius: $radius-md;
+  border: 3rpx solid $color-border;
+  transition: all $transition-base;
+
+  &.lostActive {
+    border-color: $color-lost;
+    background-color: $color-lost-bg;
+  }
+
+  &.foundActive {
+    border-color: $color-found;
+    background-color: $color-found-bg;
+  }
+}
+
+.typeIcon {
+  font-size: 56rpx;
+  margin-bottom: $spacing-sm;
+}
+
+.typeText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.typeDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.formSection {
+  background-color: $color-bg-card;
+  margin: 0 $page-padding $spacing-md;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.sectionTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+}
+
+.required {
+  color: $color-error;
+  margin-right: 4rpx;
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $spacing-lg;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.label {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-sm;
+}
+
+.input {
+  height: $button-height-md;
+  padding: 0 $spacing-md;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:focus {
+    border-color: $color-primary;
+    background-color: $color-bg-card;
+  }
+
+  &::placeholder {
+    color: $color-text-disabled;
+  }
+}
+
+.textarea {
+  min-height: 200rpx;
+  padding: $spacing-md;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:focus {
+    border-color: $color-primary;
+    background-color: $color-bg-card;
+  }
+
+  &::placeholder {
+    color: $color-text-disabled;
+  }
+}
+
+.pickerRow {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.pickerItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pickerValue {
+  height: $button-height-md;
+  padding: 0 $spacing-md;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  display: flex;
+  align-items: center;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &.placeholder {
+    color: $color-text-disabled;
+  }
+
+  &:active {
+    background-color: $color-bg-hover;
+  }
+}
+
+.imageUpload {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.imageItem {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: $radius-md;
+  overflow: hidden;
+  position: relative;
+  background-color: $color-bg-page;
+
+  Image {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 4rpx;
+  right: 4rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-white;
+  font-size: 24rpx;
+  line-height: 1;
+}
+
+.uploadBtn {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: $radius-md;
+  border: 2rpx dashed $color-border;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-bg-page;
+  transition: all $transition-base;
+
+  &:active {
+    background-color: $color-bg-hover;
+  }
+}
+
+.uploadIcon {
+  font-size: 48rpx;
+  color: $color-text-disabled;
+}
+
+.uploadText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.tagItem {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: $spacing-xs $spacing-sm;
+  background-color: $color-tag-bg;
+  color: $color-primary;
+  border-radius: $radius-sm;
+  font-size: $font-size-sm;
+
+  Text:last-child {
+    cursor: pointer;
+    opacity: 0.7;
+
+    &:active {
+      opacity: 1;
+    }
+  }
+}
+
+.tagInput {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.tagInputField {
+  flex: 1;
+  height: $button-height-md;
+  padding: 0 $spacing-md;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  border: 2rpx solid transparent;
+
+  &::placeholder {
+    color: $color-text-disabled;
+  }
+}
+
+.addTagBtn {
+  @include button-reset;
+  width: $button-height-md;
+  height: $button-height-md;
+  background-color: $color-primary;
+  border-radius: $radius-md;
+  color: $color-text-white;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.96);
+  }
+}
+
+.submitBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(env(safe-area-inset-bottom) + $spacing-md);
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: $spacing-md;
+  z-index: 100;
+}
+
+.submitBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+
+  &.disabled {
+    background-color: $color-bg-hover;
+    color: $color-text-disabled;
+    background: none;
+  }
+}
+
+.cancelBtn {
+  @include button-reset;
+  width: 160rpx;
+  height: $button-height-lg;
+  background-color: $color-bg-page;
+  border-radius: $radius-button;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active {
+    background-color: $color-bg-hover;
+  }
+}
+
+.radioGroup {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.radioItem {
+  padding: $spacing-sm $spacing-lg;
+  background-color: $color-bg-page;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &.active {
+    background-color: $color-tag-bg;
+    color: $color-primary;
+    border-color: $color-primary;
+    font-weight: $font-weight-medium;
+  }
+}

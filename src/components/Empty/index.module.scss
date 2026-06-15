@@ -1,0 +1,33 @@
+@use '@/styles/variables.scss' as *;
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl * 2 $spacing-lg;
+}
+
+.icon {
+  width: 160rpx;
+  height: 160rpx;
+  font-size: 120rpx;
+  text-align: center;
+  line-height: 160rpx;
+  opacity: 0.5;
+  margin-bottom: $spacing-lg;
+}
+
+.text {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  text-align: center;
+  line-height: $line-height-normal;
+}
+
+.description {
+  font-size: $font-size-sm;
+  color: $color-text-disabled;
+  text-align: center;
+  margin-top: $spacing-sm;
+}

@@ -1,0 +1,281 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background-color: $color-bg-page;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 140rpx);
+}
+
+.postInfoCard {
+  background: linear-gradient(135deg, $color-warning 0%, $color-warning-light 100%);
+  margin: $spacing-md $page-padding;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.postInfoLabel {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.postInfoTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+  @include text-ellipsis-multi(2);
+}
+
+.formSection {
+  background-color: $color-bg-card;
+  margin: 0 $page-padding $spacing-md;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.sectionTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  display: block;
+}
+
+.sectionDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: -$spacing-sm;
+  margin-bottom: $spacing-md;
+  display: block;
+  line-height: $line-height-normal;
+}
+
+.required {
+  color: $color-error;
+  margin-right: $spacing-xs;
+}
+
+.reasonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-md;
+}
+
+.reasonItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md $spacing-sm;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  border: 3rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &.active {
+    background-color: rgba(255, 125, 0, 0.08);
+    border-color: $color-warning;
+  }
+}
+
+.reasonIcon {
+  font-size: 48rpx;
+  margin-bottom: $spacing-xs;
+}
+
+.reasonLabel {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: $spacing-md;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: $color-primary;
+    background-color: $color-bg-card;
+  }
+
+  &::placeholder {
+    color: $color-text-disabled;
+    font-size: $font-size-sm;
+  }
+}
+
+.charCount {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  text-align: right;
+  margin-top: $spacing-sm;
+  display: block;
+}
+
+.imageUpload {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.imageItem {
+  width: 200rpx;
+  height: 200rpx;
+  position: relative;
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  Image {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  width: 44rpx;
+  height: 44rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  Text {
+    color: $color-text-white;
+    font-size: $font-size-md;
+    line-height: 1;
+  }
+}
+
+.uploadBtn {
+  width: 200rpx;
+  height: 200rpx;
+  background-color: $color-bg-page;
+  border-radius: $radius-md;
+  border: 2rpx dashed $color-border;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+
+  &:active {
+    background-color: $color-bg-hover;
+  }
+}
+
+.uploadIcon {
+  font-size: 56rpx;
+  color: $color-text-disabled;
+  line-height: 1;
+  margin-bottom: $spacing-xs;
+}
+
+.uploadText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.noticeCard {
+  display: flex;
+  gap: $spacing-md;
+  background-color: rgba(255, 193, 7, 0.1);
+  margin: 0 $page-padding $spacing-md;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  border-left: 8rpx solid $color-warning;
+}
+
+.noticeIcon {
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+
+.noticeContent {
+  flex: 1;
+}
+
+.noticeTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-warning;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.noticeText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+}
+
+.submitBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(env(safe-area-inset-bottom) + $spacing-md);
+  background-color: $color-bg-card;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+
+.cancelBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background-color: $color-bg-page;
+  border-radius: $radius-button;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active {
+    background-color: $color-bg-hover;
+  }
+}
+
+.submitBtn {
+  @include button-reset;
+  flex: 2;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-error 0%, #FF6B6B 100%);
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+
+  &.disabled {
+    background: $color-bg-hover;
+    color: $color-text-disabled;
+  }
+}

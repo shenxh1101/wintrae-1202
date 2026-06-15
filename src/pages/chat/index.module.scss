@@ -1,0 +1,200 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background-color: $color-bg-page;
+  display: flex;
+  flex-direction: column;
+}
+
+.postInfo {
+  background-color: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  border-bottom: 1rpx solid $color-divider;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.postIcon {
+  font-size: 28rpx;
+}
+
+.postTitle {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.messageList {
+  flex: 1;
+  padding: $spacing-md $page-padding;
+  padding-bottom: $spacing-xl;
+}
+
+.messageItem {
+  display: flex;
+  margin-bottom: $spacing-lg;
+
+  &.mine {
+    flex-direction: row-reverse;
+  }
+}
+
+.avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: $radius-round;
+  flex-shrink: 0;
+  background-color: $color-bg-hover;
+
+  Image {
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-round;
+  }
+}
+
+.messageContent {
+  max-width: 480rpx;
+  margin: 0 $spacing-md;
+}
+
+.messageBubble {
+  padding: $spacing-md $spacing-lg;
+  border-radius: $radius-lg;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  word-break: break-all;
+  position: relative;
+
+  .mine & {
+    background-color: $color-primary;
+    color: $color-text-white;
+    border-top-right-radius: 4rpx;
+  }
+
+  .other & {
+    background-color: $color-bg-card;
+    border-top-left-radius: 4rpx;
+    box-shadow: $shadow-card;
+  }
+}
+
+.messageTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+
+  .mine & {
+    text-align: right;
+  }
+}
+
+.quickReply {
+  background-color: $color-bg-card;
+  padding: $spacing-sm $page-padding;
+  border-top: 1rpx solid $color-divider;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.quickReplyItem {
+  display: inline-block;
+  padding: $spacing-xs $spacing-md;
+  margin-right: $spacing-sm;
+  background-color: $color-bg-page;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  transition: all $transition-base;
+
+  &:active {
+    background-color: $color-tag-bg;
+    color: $color-primary;
+  }
+}
+
+.inputBar {
+  background-color: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(env(safe-area-inset-bottom) + $spacing-md);
+  border-top: 1rpx solid $color-divider;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.input {
+  flex: 1;
+  min-height: 80rpx;
+  max-height: 200rpx;
+  padding: $spacing-sm $spacing-md;
+  background-color: $color-bg-page;
+  border-radius: $radius-lg;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:focus {
+    border-color: $color-primary;
+    background-color: $color-bg-card;
+  }
+
+  &::placeholder {
+    color: $color-text-disabled;
+  }
+}
+
+.sendBtn {
+  @include button-reset;
+  width: 120rpx;
+  height: 80rpx;
+  background-color: $color-primary;
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.96);
+  }
+
+  &.disabled {
+    background-color: $color-bg-hover;
+    color: $color-text-disabled;
+  }
+}
+
+.scheduleCard {
+  background-color: rgba(74, 144, 226, 0.1);
+  border: 2rpx solid $color-primary;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-sm;
+
+  Text {
+    font-size: $font-size-sm;
+    color: $color-primary;
+    display: block;
+    margin-bottom: 4rpx;
+  }
+}
+
+.scheduleBtn {
+  @include button-reset;
+  width: 100%;
+  height: 64rpx;
+  background-color: $color-primary;
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  margin-top: $spacing-sm;
+}
